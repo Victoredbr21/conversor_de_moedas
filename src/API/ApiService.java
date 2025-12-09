@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 
 public class ApiService
 {
-    private String JSON ;
     private String api_key;
     private String base_url;
     private HttpClient client;
