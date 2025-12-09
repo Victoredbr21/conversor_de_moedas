@@ -22,64 +22,99 @@ public class Main {
 
         ConversorDeMoedas conversor = new ConversorDeMoedas(api);
 
-
         boolean continuar = true;
 
         while (continuar) {
             exibirMenu();
             int opcao = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine();  // limpa buffer
+
+            boolean opcaoValida = false;  // ← FLAG AQUI
 
             switch (opcao) {
                 case 1:  // USD → EUR
                     realizarConversao(conversor, sc, "USD", "EUR");
+                    opcaoValida = true;  // ← MARCA QUE CONVERTEU
                     break;
 
                 case 2:  // USD → GBP
                     realizarConversao(conversor, sc, "USD", "GBP");
+                    opcaoValida = true;
                     break;
 
                 case 3:  // USD → JPY
                     realizarConversao(conversor, sc, "USD", "JPY");
+                    opcaoValida = true;
                     break;
 
                 case 4:  // USD → BRL
                     realizarConversao(conversor, sc, "USD", "BRL");
+                    opcaoValida = true;
                     break;
 
                 case 5:  // BRL → USD
                     realizarConversao(conversor, sc, "BRL", "USD");
+                    opcaoValida = true;
                     break;
 
                 case 6:  // BRL → EUR
                     realizarConversao(conversor, sc, "BRL", "EUR");
+                    opcaoValida = true;
                     break;
 
                 case 7:  // USD → ARS
                     realizarConversao(conversor, sc, "USD", "ARS");
+                    opcaoValida = true;
                     break;
 
                 case 8:  // USD → COP
                     realizarConversao(conversor, sc, "USD", "COP");
+                    opcaoValida = true;
                     break;
 
                 case 9:  // BRL → ARS
                     realizarConversao(conversor, sc, "BRL", "ARS");
+                    opcaoValida = true;
                     break;
 
                 case 10:  // Personalizada
                     conversaoPersonalizada(conversor, sc);
+                    opcaoValida = true;
                     break;
 
                 case 0:  // Sair
                     System.out.println("👋 Obrigado por usar o conversor!");
-                    continuar = false;  // ← para o loop
+                    continuar = false;
+                    opcaoValida = false;  //
                     break;
 
                 default:
                     System.out.println("❌ Opção inválida! Tente novamente.");
+                    opcaoValida = false;  //
+            }
+
+
+            if (opcaoValida) {  // ← Só pergunta se converteu algo
+                System.out.print("\n🔄 Deseja fazer outra conversão? (S/N): ");
+                String resposta = sc.nextLine().toUpperCase().trim();
+
+                if (resposta.equals("N") || resposta.equals("NAO") || resposta.equals("NÃO")) {
+                    System.out.println("👋 Obrigado por usar o conversor de moedas!");
+                    continuar = false;  // ← Para o loop
+                }
+                else if (resposta.equals("S") || resposta.equals("SIM")) {
+                    // Continua (não faz nada, loop vai reiniciar)
+                    System.out.println("");
+                }
+                else {
+                    System.out.println("⚠️ Resposta não reconhecida. Retornando ao menu...");
+
+                }
             }
         }
+
+        sc.close();
+
 
 
     } // fecha static main
@@ -145,7 +180,7 @@ private static void conversaoPersonalizada(ConversorDeMoedas conversor, Scanner 
     double resultado = conversor.converter(valor, origem, destino);
 
     if (resultado != -1.0) {
-        System.out.printf("✅ %.2f %s = %.2f %s\n",
+        System.out.printf("✅ %.2f %s = %.2f %s\n", // print format é melhor para parsear numeros decimais
                 valor, origem, resultado, destino);
     }
 }
